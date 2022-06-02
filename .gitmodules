@@ -1,0 +1,3 @@
+[submodule "CGLib"]
+	path = CGLib
+	url = https://github.com/PremiumGraphicsCodes/CGLib2022.git
