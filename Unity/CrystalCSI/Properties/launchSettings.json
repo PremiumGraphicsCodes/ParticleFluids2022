@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CrystalCSI": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
