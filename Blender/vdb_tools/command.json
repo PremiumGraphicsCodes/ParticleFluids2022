@@ -1,0 +1,24 @@
+[
+    [
+        "VDBSceneFileImport",
+        {
+            "FilePath": "points.stl",
+            "FileFormat": "STL",
+            "Radius": 0.5
+        }
+    ],
+    [
+        "VDBSceneMeshToVolume",
+        {
+            "VDBSceneId": 1,
+            "DivideLength": 1
+        }
+    ],
+    [
+        "VDBSceneFileWrite",
+        {
+            "FilePath": "points.vdb",
+            "VDBSceneId": 2
+        }
+    ]
+]

@@ -1,0 +1,227 @@
+import bpy
+from bpy.props import (
+    IntProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    EnumProperty,
+    BoolProperty,
+)
+
+
+bl_info = {
+    "name": "ParticleFluidsForBlender",
+    "author": "PremiumGraphics",
+    "version": (3, 0),
+    "blender": (2, 80, 0),
+    "location": "3Dビューポート > Sidebar",
+    "description": "BlenderのUIを制御するアドオン",
+    "warning": "",
+    "support": "TESTING",
+    "wiki_url": "",
+    "tracker_url": "",
+    "category": "User Interface"
+}
+
+
+class SAMPLE27_OT_Nop(bpy.types.Operator):
+
+    bl_idname = "object.sample27_nop"
+    bl_label = "NOP"
+    bl_description = "何もしない"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        return {'FINISHED'}
+
+
+class SAMPLE27_MT_NopMenu(bpy.types.Menu):
+
+    bl_idname = "SAMPLE27_MT_NopMenu"
+    bl_label = "NOP メニュー"
+    bl_description = "何もしないオペレータを複数持つメニュー"
+
+    def draw(self, context):
+        layout = self.layout
+        # メニュー項目の追加
+        for i in range(3):
+            layout.operator(SAMPLE27_OT_Nop.bl_idname, text=("項目 %d" % (i)))
+
+
+# Sidebarのタブ [カスタムタブ] に、パネル [カスタムパネル] を追加
+class SAMPLE27_PT_CustomPanel(bpy.types.Panel):
+
+    bl_label = "ParticleFluids"         # パネルのヘッダに表示される文字列
+    bl_space_type = 'VIEW_3D'           # パネルを登録するスペース
+    bl_region_type = 'UI'               # パネルを登録するリージョン
+    bl_category = "カスタムタブ"        # パネルを登録するタブ名
+    bl_context = "objectmode"           # パネルを表示するコンテキスト
+
+    # 本クラスの処理が実行可能かを判定する
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    # ヘッダーのカスタマイズ
+    def draw_header(self, context):
+        layout = self.layout
+        layout.label(text="", icon='PLUGIN')
+
+    # メニューの描画処理
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+
+        # ボタンを追加
+        layout.label(text="ボタン:")
+        layout.operator(SAMPLE27_OT_Nop.bl_idname, text="ボタン1")
+        layout.operator(SAMPLE27_OT_Nop.bl_idname, text="ボタン2", emboss=False)
+
+        # セパレータを追加
+        layout.separator()
+
+        # ドロップダウンメニューを追加
+        layout.label(text="ドロップダウンメニュー:")
+        layout.menu(SAMPLE27_MT_NopMenu.bl_idname,
+                    text="ドロップダウンメニュー")
+
+        layout.separator()
+
+        # テキストボックスを追加
+        layout.label(text="テキストボックス:")
+        layout.prop(scene, "sample27_prop_int", text="プロパティ 1")
+        layout.prop(scene, "sample27_prop_float", text="プロパティ 2")
+        layout.prop(scene, "sample27_prop_floatv", text="プロパティ 3")
+
+        # ドロップダウンプロパティを追加
+        layout.label(text="ドロップダウンプロパティ:")
+        layout.prop(scene, "sample27_prop_enum", text="プロパティ 4")
+
+        # チェックボックスを追加
+        layout.label(text="チェックボックス:")
+        layout.prop(scene, "sample27_prop_bool", text="プロパティ 5")
+
+        layout.separator()
+
+        # 一行配置（アライメントなし）
+        layout.label(text="一行配置（アライメントなし）:")
+        row = layout.row(align=False)
+        for i in range(3):
+            row.operator(SAMPLE27_OT_Nop.bl_idname, text=("列 %d" % (i)))
+
+        layout.separator()
+
+        # 一行配置（アライメントあり）
+        layout.label(text="一行配置（アライメントあり）:")
+        row = layout.row(align=True)
+        for i in range(3):
+            row.operator(SAMPLE27_OT_Nop.bl_idname, text=("列 %d" % (i)))
+
+        layout.separator()
+
+        # 一列配置（アライメントなし）
+        layout.label(text="一列配置（アライメントなし）:")
+        column = layout.column(align=False)
+        for i in range(3):
+            column.operator(SAMPLE27_OT_Nop.bl_idname, text=("行 %d" % (i)))
+
+        layout.separator()
+
+        # 一列配置（アライメントあり）
+        layout.label(text="一列配置（アライメントあり）:")
+        column = layout.column(align=True)
+        for i in range(3):
+            column.operator(SAMPLE27_OT_Nop.bl_idname, text=("行 %d" % (i)))
+
+        layout.separator()
+
+        # グループ化
+        layout.label(text="グループ化:")
+        row = layout.row()
+        box = row.box()
+        box_row = box.row()
+        box_column = box_row.column()
+        box_column.operator(SAMPLE27_OT_Nop.bl_idname, text="行 1, 列 1")
+        box_column.separator()
+        box_column.operator(SAMPLE27_OT_Nop.bl_idname, text="行 2, 列 1")
+        box_row.separator()
+        box_column = box_row.column()
+        box_column.operator(SAMPLE27_OT_Nop.bl_idname, text="行 1, 列 2")
+        box_column.separator()
+        box_column.operator(SAMPLE27_OT_Nop.bl_idname, text="行 2, 列 2")
+
+
+# プロパティの初期化
+def init_props():
+    scene = bpy.types.Scene
+    scene.sample27_prop_int = IntProperty(
+        name="プロパティ 1",
+        description="プロパティ（int）",
+        default=100,
+        min=0,
+        max=255
+    )
+    scene.sample27_prop_float = FloatProperty(
+        name="プロパティ 2",
+        description="プロパティ（float）",
+        default=0.75,
+        min=0.0,
+        max=1.0
+    )
+    scene.sample27_prop_floatv = FloatVectorProperty(
+        name="プロパティ 3",
+        description="プロパティ（float vector）",
+        subtype='COLOR_GAMMA',
+        default=(1.0, 1.0, 1.0),
+        min=0.0,
+        max=1.0
+    )
+    scene.sample27_prop_enum = EnumProperty(
+        name="プロパティ 4",
+        description="プロパティ（enum）",
+        items=[
+            ('ITEM_1', "項目 1", "項目 1"),
+            ('ITEM_2', "項目 2", "項目 2"),
+            ('ITEM_3', "項目 3", "項目 3")
+        ],
+        default='ITEM_1'
+    )
+    scene.sample27_prop_bool = BoolProperty(
+        name="プロパティ 5",
+        description="プロパティ（bool）",
+        default=False
+    )
+
+
+# プロパティを削除
+def clear_props():
+    scene = bpy.types.Scene
+    del scene.sample27_prop_int
+    del scene.sample27_prop_float
+    del scene.sample27_prop_floatv
+    del scene.sample27_prop_enum
+    del scene.sample27_prop_bool
+
+
+classes = [
+    SAMPLE27_OT_Nop,
+    SAMPLE27_MT_NopMenu,
+    SAMPLE27_PT_CustomPanel,
+]
+
+
+def register():
+    for c in classes:
+        bpy.utils.register_class(c)
+    init_props()
+    print("サンプル 2-7: アドオン『サンプル 2-7』が有効化されました。")
+
+
+def unregister():
+    clear_props()
+    for c in classes:
+        bpy.utils.unregister_class(c)
+    print("サンプル 2-7: アドオン『サンプル 2-7』が無効化されました。")
+
+
+if __name__ == "__main__":
+    register()
