@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CrystalGPUView.cpp" />
+    <ClCompile Include="ParticleDepthRenderer.cpp" />
+    <ClCompile Include="SSAbsorptionRenderer.cpp" />
+    <ClCompile Include="SSFluidRenderer.cpp" />
+    <ClCompile Include="SSNormalRenderer.cpp" />
+    <ClCompile Include="SSReflectionRenderer.cpp" />
+    <ClCompile Include="SSThicknessRenderer.cpp" />
+    <ClCompile Include="CSMenu.cpp">
+      <Filter>ComputeShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CSSampleRenderer.cpp">
+      <Filter>ComputeShader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ParticleDepthRenderer.h" />
+    <ClInclude Include="SSAbsorptionRenderer.h" />
+    <ClInclude Include="SSFluidRenderer.h" />
+    <ClInclude Include="SSNormalRenderer.h" />
+    <ClInclude Include="SSReflectionRenderer.h" />
+    <ClInclude Include="SSThicknessRenderer.h" />
+    <ClInclude Include="CSMenu.h">
+      <Filter>ComputeShader</Filter>
+    </ClInclude>
+    <ClInclude Include="CSSampleRenderer.h">
+      <Filter>ComputeShader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ComputeShader">
+      <UniqueIdentifier>{da1bd14c-b6f5-449d-bf97-c50ffb96ca34}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

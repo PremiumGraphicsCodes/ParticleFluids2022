@@ -1,0 +1,13 @@
+#version 150
+in vec3 position;
+in float pointSize;
+out float vSize;
+out vec4 vPosition;
+uniform mat4 projectionMatrix;
+uniform mat4 modelviewMatrix;
+void main(void) {
+	gl_Position = projectionMatrix * modelviewMatrix * vec4(position, 1.0);
+	gl_PointSize = pointSize / gl_Position.w;
+	vSize = gl_PointSize;
+	vPosition = modelviewMatrix * vec4(position, 1.0);
+}

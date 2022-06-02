@@ -1,0 +1,13 @@
+#version 150
+in vec3 reflectDir;
+in vec3 refractDir;
+uniform samplerCube cubeMapTex;
+uniform float reflectFactor;
+uniform float refractFactor;
+out vec4 fragColor;
+void main() {
+	vec4 reflectColor = texture(cubeMapTex, reflectDir);
+	vec4 refractColor = texture(cubeMapTex, refractDir);
+	fragColor = mix(refractColor, reflectColor, 1.0);
+	fragColor.rgb = refractDir;
+}

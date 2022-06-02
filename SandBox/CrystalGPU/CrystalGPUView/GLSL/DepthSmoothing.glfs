@@ -1,0 +1,29 @@
+#version 150
+uniform sampler2D tex;
+uniform int isX;
+uniform float width;
+uniform float height;
+in vec2 texCoord;
+void main(void) {
+	float sum = 0;
+	float wsum = 0;
+	float filterRadius = 5;
+	float blurScale = 1;
+	float blurDepthFalloff = 1.0;
+	float depth = texture2D(tex, texCoord).r;
+	for(float x = -filterRadius; x <= filterRadius; x+= 1.0){
+		float dx = (isX == 1) ? (x/width) : (x/height);
+		vec2 offset = (isX == 1) ? vec2(dx,0) : vec2(0,dx);
+		float sample = texture2D(tex, texCoord + offset ).r;
+		float r = dx * blurScale;
+		float w = exp(-r*r);
+		float r2 = (sample-depth) * blurDepthFalloff;
+		float g = exp(-r2*r2);
+		sum += sample * w * g;
+		wsum += w * g;
+	}
+	if(wsum > 0.0) {
+		sum /= wsum;
+	}
+	gl_FragDepth = sum;
+}
